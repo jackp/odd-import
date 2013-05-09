@@ -1,0 +1,22 @@
+{
+  "name": "odd-import",
+  "version": "0.1.0",
+  "description": "import sqlite database into local mysql instance",
+  "main": "import.js",
+  "dependencies": {
+    "mysql": "~2.0.0-alpha8",
+    "sequelize": "~1.7.0-alpha1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jackp/odd-import.git"
+  },
+  "author": "Jack Parker",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "gitHead": "86885ef0c61fc7cd301348412537c748cd24996a"
+}
