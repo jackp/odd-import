@@ -4,8 +4,12 @@
   "description": "import sqlite database into local mysql instance",
   "main": "import.js",
   "dependencies": {
+    "inotify": "~1.2.1",
     "mysql": "~2.0.0-alpha8",
-    "sequelize": "~1.7.0-alpha1"
+    "sqlite3": "~2.1.7",
+    "underscore": "~1.4.4",
+    "sequelize": "~1.7.0-alpha1",
+    "async": "~0.2.8"
   },
   "devDependencies": {},
   "scripts": {
@@ -17,6 +21,5 @@
   },
   "author": "Jack Parker",
   "license": "BSD",
-  "readmeFilename": "README.md",
-  "gitHead": "86885ef0c61fc7cd301348412537c748cd24996a"
+  "gitHead": "95ef8d500773949a99f3b13368c2f5d38b7cfe8f"
 }
