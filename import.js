@@ -6,6 +6,7 @@ var Sequelize = require('sequelize'),
 		async = require('async'),
 		fs = require('fs'),
 		_ = require('underscore'),
+		moment = require('moment'),
 		Inotify = require('inotify').Inotify,
 		inotify = new Inotify();
 
@@ -42,7 +43,7 @@ var callback = function(event){
 	var sampleModel = {
 		"vessel_id" : Sequelize.INTEGER,
 		"session_id" : Sequelize.INTEGER,
-		"when_sampled" : Sequelize.INTEGER,
+		"when_sampled" : Sequelize.DATE,
 		"length" : Sequelize.INTEGER,
 		"sex" : Sequelize.STRING,
 		"eggs" : Sequelize.INTEGER,
@@ -55,7 +56,7 @@ var callback = function(event){
 
 	var randomModel = {
 		"vessel_id" : Sequelize.INTEGER,
-		"when_sampled" : Sequelize.INTEGER,
+		"when_sampled" : Sequelize.DATE,
 		"lat" : Sequelize.FLOAT,
 		"lon" : Sequelize.FLOAT,
 		"length" : Sequelize.INTEGER,
@@ -66,8 +67,8 @@ var callback = function(event){
 
 	var sessionModel = {
 		"vessel_id" : Sequelize.INTEGER,
-		"when_start" : Sequelize.INTEGER,
-		"when_stop" : Sequelize.INTEGER,
+		"when_start" : Sequelize.DATE,
+		"when_stop" : Sequelize.DATE,
 		"start_lat" : Sequelize.FLOAT,
 		"start_lon" : Sequelize.FLOAT,
 		"num_traps" : Sequelize.INTEGER,
@@ -86,6 +87,9 @@ var callback = function(event){
 			SampleLite.all().success(function(results){
 				_.each(results, function(result){
 					result.selectedValues = _.omit(result.selectedValues, 'id');
+
+					// Format date
+					result.selectedValues.when_sampled = moment(result.selectedValues.when_sampled).format('YYYY-MM-DD HH:mm:ss');
 
 					var sample = Sample.build(result.selectedValues);
 
@@ -106,6 +110,9 @@ var callback = function(event){
 				_.each(results, function(result){
 					result.selectedValues = _.omit(result.selectedValues, 'id');
 
+					// Format date
+					result.selectedValues.when_sampled = moment(result.selectedValues.when_sampled).format('YYYY-MM-DD HH:mm:ss');
+
 					var random = Random.build(result.selectedValues);
 
 					random.save().success(function(){
@@ -123,13 +130,18 @@ var callback = function(event){
 
 			SessionLite.all().success(function(results){
 				_.each(results, function(result){
-					result.selectedValues = _.omit(result.selectedValues, 'id');
+					// result.selectedValues = _.omit(result.selectedValues, 'id');
+
+					// Format date
+					result.selectedValues.when_start = moment(result.selectedValues.when_start).format('YYYY-MM-DD HH:mm:ss');
+					result.selectedValues.when_stop = moment(result.selectedValues.when_stop).format('YYYY-MM-DD HH:mm:ss');
 
 					var session = Session.build(result.selectedValues);
 
 					session.save().success(function(){
 					}).error(function(error){
 						console.log('ERROR');
+						console.log(error);
 					});
 				});
 
