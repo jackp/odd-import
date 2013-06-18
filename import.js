@@ -76,7 +76,8 @@ var callback = function(event){
 		"depth" : Sequelize.INTEGER,
 		"depth_unit" : Sequelize.STRING,
 		"notes" : Sequelize.TEXT,
-		"session_type" : Sequelize.STRING
+		"session_type" : Sequelize.STRING,
+		"stat_area": Sequelize.INTEGER
 	};
 
 	async.parallel({
