@@ -10,7 +10,8 @@
     "underscore": "~1.4.4",
     "sequelize": "~1.7.0-alpha1",
     "async": "~0.2.8",
-    "moment": "~2.0.0"
+    "moment": "~2.0.0",
+    "pkgcloud": "~0.8.1"
   },
   "devDependencies": {},
   "scripts": {
