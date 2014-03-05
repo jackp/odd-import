@@ -42,7 +42,10 @@ var callback = function(event){
 
 	var sampleModel = {
 		"vessel_id" : Sequelize.INTEGER,
-		"session_id" : Sequelize.INTEGER,
+		"session_id" : {
+			type: Sequelize.INTEGER,
+			primaryKey: true
+		},
 		"when_sampled" : Sequelize.DATE,
 		"length" : Sequelize.INTEGER,
 		"sex" : Sequelize.STRING,
@@ -96,7 +99,8 @@ var callback = function(event){
 
 					sample.save().success(function(){
 					}).error(function(error){
-						console.log('ERROR');
+						console.log('SAMPLE ERROR');
+						console.log(error);
 					});
 				});
 
@@ -118,7 +122,8 @@ var callback = function(event){
 
 					random.save().success(function(){
 					}).error(function(error){
-						console.log('ERROR');
+						console.log(' RANDOM ERROR');
+						console.log(error);
 					});
 				});
 
@@ -141,7 +146,7 @@ var callback = function(event){
 
 					session.save().success(function(){
 					}).error(function(error){
-						console.log('ERROR');
+						console.log('SESSION ERROR');
 						console.log(error);
 					});
 				});
@@ -150,8 +155,9 @@ var callback = function(event){
 			});
 		}
 	}, function(err, results){
-		console.log(results);
-		
+		if(err){
+			console.log(err);
+		}		
 		fs.renameSync(WATCH_PATH + event.name, WATCH_PATH + 'processed/' + event.name);
 	});
 };
@@ -159,6 +165,7 @@ var callback = function(event){
 ///////////////////////////////////////////////////
 //	Watch WATCH_PATH for changes
 ///////////////////////////////////////////////////
+console.log('SETTING UP WATCH');
 
 inotify.addWatch({
 	path: WATCH_PATH,
