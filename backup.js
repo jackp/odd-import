@@ -19,7 +19,7 @@ var child = exec('mysqldump -u jack -pj6286ipp cfrf > tmp/backup.sql', function(
 
 		rackspace.upload({
 			container: 'oddbackups',
-			remote: 'backup_' + (date.getMonth()+1) + '_' + (date.getDate()) + '_' + date.getFullYear() + '.sql',
+			remote: 'backup_' + (date.getMonth()+1) + '_' + (date.getDate()) + '_' + date.getHours() + "_" + date.getFullYear() + '.sql',
 			local: '/home/jack/tmp/backup.sql',
 			headers: {
 				contentType: 'application/sql'
