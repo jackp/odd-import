@@ -21,6 +21,8 @@ var WATCH_PATH = '/home/odd/';
 
 var callback = function(event){
 	console.log('PROCESSING: ' + event.name);
+	var is_temp = /ocean_temps/.test(event.name);
+
 	var sqlite = new Sequelize('cfrf', null, null, {
 		dialect : 'sqlite',
 		storage : WATCH_PATH + event.name,
@@ -120,6 +122,10 @@ var callback = function(event){
 
 	async.parallel({
 		sample : function(cb){
+			if(is_temp) {
+				return cb(null, true)
+			}
+
 			var SampleLite = sqlite.define('sample', sampleModel);
 			var Sample = mysql.define('sample', sampleModel);
 
@@ -140,9 +146,16 @@ var callback = function(event){
 				});
 
 				cb(null, true);
+			}).error(function(error){
+				console.log(error);
+				cb(null, true);
 			});
 		},
 		random : function(cb){
+			if(is_temp) {
+				return cb(null, true)
+			}
+
 			var RandomLite = sqlite.define('random', randomModel);
 			var Random = mysql.define('random', randomModel);
 
@@ -163,9 +176,16 @@ var callback = function(event){
 				});
 
 				cb(null, true);
+			}).error(function(error){
+				console.log(error);
+				cb(null, true);
 			});
 		},
 		session : function(cb){
+			if(is_temp) {
+				return cb(null, true)
+			}
+
 			var SessionLite = sqlite.define('session', sessionModel);
 			var Session = mysql.define('session', sessionModel);
 
@@ -187,11 +207,18 @@ var callback = function(event){
 				});
 
 				cb(null, true);
+			}).error(function(error){
+				console.log(error);
+				cb(null, true);
 			});
 		},
 		tempSession: function(cb){
-			var TempSessionLite = sqlite.define('temp_sessions', tempSessionModel);
-			var TempSession = mysql.define('temp_sessions', tempSessionModel);
+			if(!is_temp) {
+				return cb(null, true)
+			}
+
+			var TempSessionLite = sqlite.define('temp_session', tempSessionModel);
+			var TempSession = mysql.define('temp_session', tempSessionModel);
 
 			TempSessionLite.all().success(function(results){
 				_.each(results, function(result){
@@ -211,11 +238,18 @@ var callback = function(event){
 				});
 
 				cb(null, true);
+			}).error(function(error){
+				cb(null, true);
+				console.log(error);
 			});
 		},
 		tempSample: function(cb){
-			var TempSampleLite = sqlite.define('temp_samples', tempSampleModel);
-			var TempSample = mysql.define('temp_samples', tempSampleModel);
+			if(!is_temp) {
+				return cb(null, true)
+			}
+
+			var TempSampleLite = sqlite.define('temp_sample', tempSampleModel);
+			var TempSample = mysql.define('temp_sample', tempSampleModel);
 
 			TempSampleLite.all().success(function(results){
 				_.each(results, function(result){
@@ -233,6 +267,9 @@ var callback = function(event){
 					});
 				});
 
+				cb(null, true);
+			}).error(function(error){
+				console.log(error);
 				cb(null, true);
 			});
 		}
